@@ -13,8 +13,8 @@ import ai_io
 
 def swap_random(letters):
     """
-    Input: 2D array of letters
-    Output: 2D array of letters that has 2 positions different from input
+    Input: 2D list of letters
+    Output: 2D list of letters that has 2 positions different from input
     """
     row1 = random.randint(0, 2)
     col1 = random.randint(0, 2)
@@ -34,11 +34,11 @@ def swap_random(letters):
 
 def heuristic(letters):
     """
-    Input: 2D array of letters
+    Input: 2D tuple or 2D list of letters
     Output: sum of frequencies plus number of meaningful words
     """
     score = 0
-    
+
     for i in range(0,3):
         # accumulate by rows
         score += ai_io.get_frequency(letters[i][0], letters[i][1])
@@ -53,7 +53,7 @@ def heuristic(letters):
         if ai_io.has_meaning(letters[0][i], letters[1][i], letters[2][i]):
             # column i has meaning
             score += 1
-        
+
     #accumulate by diagonals
     score += ai_io.get_frequency(letters[0][0], letters[1][1])
     score += ai_io.get_frequency(letters[1][1], letters[2][2])
@@ -65,12 +65,12 @@ def heuristic(letters):
     if ai_io.has_meaning(letters[0][2], letters[1][1], letters[2][0]):
         # diagonal right - left has meaning
         score += 1
-    
+
     return score
 
 def check_all(letters):
     """
-    Input: 2D array of letters
+    Input: 2D tuple or 2D list of letters
     Output: True of all words have meanings, False otherwise
     """
     flag = True
@@ -90,17 +90,8 @@ def check_all(letters):
     return flag
     
 def main():
-    # 2D - array of letters
-    letters_0 = [
-        ['a','e','o'],
-        ['p','r','r'],
-        ['s','w','y']
-    ]
-#    letters_0 = [
-#        ['a','e','e'],
-#        ['i','k','l'],
-#        ['l','p','y']
-#    ]
+    # read input
+    letters_0 = ai_io.read_input('input01')
 
     while check_all(letters_0) == False:
         h_0 = heuristic(letters_0)
@@ -117,6 +108,8 @@ def main():
             letters_0 = letters_1
 
     else:
+        # print to file
+        ai_io.print_result(letters_0)
         print("Result: {}".format(letters_0))
 
 
