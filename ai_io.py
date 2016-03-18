@@ -12,10 +12,13 @@ with open('bigram_frequence_list') as open_file:
 def read_input(file_name):
     """
     Input: string file_name
-    Output: file's data as string
+    Output: file's data as 2D list of letters
     """
     with open(file_name) as open_file:
-        return open_file.read()
+        data = open_file.read()
+
+    data = data.split()
+    return [data[0:3], data[3:6], data[6:9]]
 
 def has_meaning(*letters):
     """
@@ -39,4 +42,15 @@ def get_frequency(*letters):
     line = re.search(pair + r'\s0[\d.]*', freq_list, re.I).group()
 
     return float(line[4:])
+
+def print_result(letters):
+    """
+    Input: one 2D tuple or 2D list of letters
+    Output: write to 'result.txt' file as 3x3 matrix
+    """
+    open_file = open("result", 'w')
+
+    for i in letters:
+        open_file.write(' '.join(i))
+        open_file.write('\n')
 
