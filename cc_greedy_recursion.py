@@ -1,4 +1,10 @@
-import random
+#========================
+# Cat Can + Page Nguyen
+# 2016/03/19
+# Greedy algorithm find all possible permutations until the first result is found
+#========================
+
+import datetime
 
 import ai_io
 
@@ -8,6 +14,8 @@ def check_all(letters1d):
     Input: 1D array of letters
     Output: True of all words have meanings, False otherwise
     """
+    letters = [['x','x','x'], ['x','x','x'], ['x','x','x']]
+    
     letters[0][0] = letters1d[0]
     letters[0][1] = letters1d[1]
     letters[0][2] = letters1d[2]
@@ -34,19 +42,28 @@ def check_all(letters1d):
 
     return flag
 
+# global
+met = [False]
 
-met = False
-
-def gen(letters, matrix):
-    if not met:
+def gen(letters, matrix, met):
+    if not met[0]:
         if len(letters) == 0:
-            met = check_all(matrix)
+            # print(matrix)  # uncomment this to see it run
+            if check_all(matrix):
+                print(matrix)
+                met[0] = True
         else:
             for i in letters:
-                letters.remove(i)
+                temp = letters[:]
+                temp.remove(i)
                 matrix.append(i)
-                gen(letters, matrix)
+                gen(temp, matrix, met)
+                matrix.pop()
 
-gen(["x"]*9, [])
-print(met)
-     
+#main
+start_time = datetime.datetime.now()  # start time
+# run
+gen(['a', 'e', 'o', 'p', 'r', 'r', 's', 'w', 'y'], [], met)
+end_time = datetime.datetime.now()  # end time
+print("Time: {}".format((end_time - start_time).total_seconds()))
+
