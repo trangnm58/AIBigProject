@@ -43,12 +43,12 @@ def get_frequency(*letters):
 
     return float(line[4:])
 
-def print_result(letters):
+def print_result(letters, file_name):
     """
     Input: one 2D tuple or 2D list of letters
     Output: write to 'result.txt' file as 3x3 matrix
     """
-    open_file = open("result", 'w')
+    open_file = open(file_name, 'w')
 
     for i in letters:
         open_file.write(' '.join(i))

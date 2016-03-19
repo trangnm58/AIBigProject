@@ -109,7 +109,7 @@ def main():
 
     else:
         # print to file
-        ai_io.print_result(letters_0)
+        ai_io.print_result(letters_0, 'result')
         print("Result: {}".format(letters_0))
 
 
