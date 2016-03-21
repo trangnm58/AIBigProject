@@ -9,28 +9,7 @@ import copy
 import datetime
 
 import ai_io
-
-
-def swap_random(letters):
-    """
-    Input: 2D list of letters
-    Output: 2D list of letters that has 2 positions different from input
-    """
-    row1 = random.randint(0, 2)
-    col1 = random.randint(0, 2)
-    row2 = random.randint(0, 2)
-    col2 = random.randint(0, 2)
-
-    while row2 == row1 and col2 == col1:
-        # random the same position
-        # random again
-        row2 = random.randint(0, 2)
-
-    # swap 2 letters at 2 positions
-    letters_cp = copy.deepcopy(letters)
-    letters_cp[row1][col1], letters_cp[row2][col2] = letters_cp[row2][col2], letters_cp[row1][col1]
-    
-    return letters_cp
+import ai_helper
 
 def heuristic(letters):
     """
@@ -68,39 +47,18 @@ def heuristic(letters):
 
     return score
 
-def check_all(letters):
-    """
-    Input: 2D tuple or 2D list of letters
-    Output: True of all words have meanings, False otherwise
-    """
-    flag = True
-
-    for i in range(0,3):
-        # check row i and col i
-        if (not ai_io.has_meaning(letters[i][0], letters[i][1], letters[i][2]) or
-            not ai_io.has_meaning(letters[0][i], letters[1][i], letters[2][i])):
-            flag = False
-            break
-
-    # check diagons
-    if (not ai_io.has_meaning(letters[0][0], letters[1][1], letters[2][2]) or
-        not ai_io.has_meaning(letters[0][2], letters[1][1], letters[2][0])):
-        flag = False
-
-    return flag
-    
 def main():
     # read input
     letters_0 = ai_io.read_input('input01')
 
-    while check_all(letters_0) == False:
+    while ai_helper.check_all(letters_0) == False:
         h_0 = heuristic(letters_0)
 
-        letters_1 = swap_random(letters_0)
+        letters_1 = ai_helper.swap_random(letters_0)
 
         count_inside = 0  # set the limit of inside loop
         while heuristic(letters_1) <= h_0 and count_inside < 5:
-            letters_1 = swap_random(letters_0)
+            letters_1 = ai_helper.swap_random(letters_0)
             count_inside += 1
         else:
             # letters_1 is better or loop exceeds 5 times
