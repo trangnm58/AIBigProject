@@ -8,8 +8,12 @@ import random
 import copy
 import datetime
 
-import ai_io
-import ai_helper
+import lib.ai_io as ai_io
+import lib.ai_helper as ai_helper
+
+
+def __str__():
+    return 'pn_heuristic_01'
 
 def heuristic(letters):
     """
@@ -47,9 +51,9 @@ def heuristic(letters):
 
     return score
 
-def main():
+def main(letters):
     # read input
-    letters_0 = ai_io.read_input('input01')
+    letters_0 = letters
 
     while ai_helper.check_all(letters_0) == False:
         h_0 = heuristic(letters_0)
@@ -66,14 +70,5 @@ def main():
             letters_0 = letters_1
 
     else:
-        # print to file
-        ai_io.print_result(letters_0, 'result')
-        print("Result: {}".format(letters_0))
-
-
-start_time = datetime.datetime.now()  # start time
-# run
-main()
-end_time = datetime.datetime.now()  # end time
-print("Time: {}".format((end_time - start_time).total_seconds()))
+        return letters_0
 
