@@ -6,8 +6,8 @@
 
 import datetime
 
-import lib.ai_io as ai_io
-import lib.ai_helper as ai_helper
+import ai_lib.ai_io as ai_io
+import ai_lib.ai_helper as ai_helper
 
 
 # global

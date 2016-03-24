@@ -7,8 +7,8 @@
 import datetime
 import collections
 
-import lib.ai_io as ai_io
-import lib.ai_helper as ai_helper
+import ai_lib.ai_io as ai_io
+import ai_lib.ai_helper as ai_helper
 import algorithms.pn_greedy_recursion_01 as pn_greedy_recursion_01
 import algorithms.pn_heuristic_01 as pn_heuristic_01
 import algorithms.cc_greedy_recursion as cc_greedy_recursion
