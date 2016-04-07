@@ -9,11 +9,13 @@ import ai_lib.ai_helper as ai_helper
 
 # global
 previous = {1: 0, 2: 1, 3: 0, 4: 3, 5: 4, 6: 3, 7: 6, 8: 7}
+# Cat's defined dict. Using this makes it run much longer
+# {1: [0], 2: [1], 3: [0], 4: [0, 1, 2, 3], 5: [2, 4], 6: [3, 4], 7: [4, 6], 8: [4, 5, 7]}
 
 def __str__():
-    return 'pn_greedy_02'
+    return 'pn_greedy_03'
 
-def heuristic(state, freq_dict):
+def heuristic(state, freq_dict, letters):
     score = 0
 
     if len(state) == 3:
@@ -42,6 +44,16 @@ def heuristic(state, freq_dict):
             continue
         else:
             score += freq
+
+    # go deeper 1 move
+    letters.remove(state[len(state) - 1])
+    for letter in letters:
+        try:
+            freq = freq_dict[state[previous[len(state)]] + letter]
+        except:
+            continue
+        else:
+            score += freq
     return score
 
 def greedy_heuristic(OneD_letters, freq_dict, trace):
@@ -67,7 +79,7 @@ def greedy_heuristic(OneD_letters, freq_dict, trace):
 
         for letter in letters_cp:
             v = u + letter
-            h_v = heuristic(v, freq_dict)
+            h_v = heuristic(v, freq_dict, letters_cp[:])
 
             if h_v == 0:
                 # skip the state if its heuristic value is 0

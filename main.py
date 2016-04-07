@@ -9,17 +9,13 @@ import collections
 
 import ai_lib.ai_io as ai_io
 import ai_lib.ai_helper as ai_helper
-#import algorithms.pn_greedy_recursion_01 as pn_greedy_recursion_01
-#import algorithms.pn_heuristic_01 as pn_heuristic_01
-#import algorithms.cc_greedy_recursion as cc_greedy_recursion
 import algorithms.pn_greedy_02 as pn_greedy_02
+import algorithms.pn_greedy_03 as pn_greedy_03
 
 # global
 algorithms = collections.OrderedDict()
 algorithms['1'] = pn_greedy_02
-#algorithms['1'] = pn_greedy_recursion_01
-#algorithms['2'] = pn_heuristic_01
-#algorithms['3'] = cc_greedy_recursion
+algorithms['2'] = pn_greedy_03
 
 
 def main():
