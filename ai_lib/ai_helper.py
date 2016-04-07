@@ -56,32 +56,6 @@ def to_two_d(letters):
     """
     return [letters[0:3], letters[3:6], letters[6:9]]
 
-def get_frequency_list(letters):
-    """
-    Input: 2D list of letters
-    Output: A list of tuple (key: value)
-        key is a string of 2 letters from 'letters'
-        value is a frequency of the 2 letters
-    """
-    OneD_letters = to_one_d(letters)
-    fre_list = []
-    for i in OneD_letters:
-        lst_cp = OneD_letters[:]
-        lst_cp.remove(i)
-        for j in lst_cp:
-            fre = ai_io.get_frequency(i, j)
-            if fre > 0 and (i+j, fre) not in fre_list:
-               fre_list.append((i+j, fre))
-    # sort the list using bubble sort
-    swapped = True
-    while swapped == True:
-        swapped = False
-        for i in range(len(fre_list) - 1):
-            if fre_list[i][1] < fre_list[i+1][1]:
-                fre_list[i], fre_list[i+1] = fre_list[i+1], fre_list[i]
-                swapped = True
-    return fre_list
-
 def get_frequency_dict(letters):
     """
     Input: 2D list of letters
@@ -90,13 +64,13 @@ def get_frequency_dict(letters):
         value is a frequency of the 2 letters
     """
     OneD_letters = to_one_d(letters)
-    fre_dict = {}
+    freq_dict = {}
     for i in OneD_letters:
         lst_cp = OneD_letters[:]
         lst_cp.remove(i)
         for j in lst_cp:
             fre = ai_io.get_frequency(i, j)
-            if fre > 0 and i+j not in fre_dict:
-               fre_dict[i+j] = fre
-    return fre_dict
+            if fre > 0 and i+j not in freq_dict:
+               freq_dict[i+j] = fre
+    return freq_dict
 

@@ -1,24 +1,43 @@
 import re
+import random
 
 
 # read 2 given files once when this module is imported
 with open('ai_lib/3_letters_dictionary') as open_file:
     letters_dict = open_file.read()
-    
+
 with open('ai_lib/bigram_frequence_list') as open_file:
     freq_list = open_file.read()
 
+def create_input(num_of_input):
+    """
+    Input: Number of inputs need to create
+    Output: Print randomly created inputs to "input" file
+    """
+    alphabet = list('abcdefghijklmnopqrstuvwxyz')
+    inputs = []
+    for k in range(num_of_input):
+        letters = ''
+        for i in range(9):
+            letters += random.choice(alphabet)
+        inputs.append(letters)
 
-def read_input(file_name):
+    open_file = open("input", 'w')
+    for i in inputs:
+        open_file.write(i + "\n")
+
+def read_input():
     """
-    Input: string file_name
-    Output: file's data as 2D list of letters
+    Output: a list of 2D list of letters
     """
-    with open(file_name) as open_file:
+    with open("input") as open_file:
         data = open_file.read()
 
     data = data.split()
-    return [data[0:3], data[3:6], data[6:9]]
+    inputs = []
+    for line in data:
+        inputs.append([line[0:3], line[3:6], line[6:9]])
+    return inputs 
 
 def has_meaning(*letters):
     """
@@ -43,14 +62,13 @@ def get_frequency(*letters):
 
     return float(line[4:])
 
-def print_result(letters, file_name):
+def print_results(results, file_name):
     """
-    Input: one 2D tuple or 2D list of letters
-    Output: write to 'result.txt' file as 3x3 matrix
+    Input: a list of strings of letters
+    Output: write to file_name file as a string of 9 letters
     """
     open_file = open(file_name, 'w')
 
-    for i in letters:
-        open_file.write(' '.join(i))
-        open_file.write('\n')
+    for result in results:
+        open_file.write(str(result) + "\n")
 
