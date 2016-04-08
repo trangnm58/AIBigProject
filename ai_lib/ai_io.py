@@ -72,3 +72,16 @@ def print_results(results, file_name):
     for result in results:
         open_file.write(str(result) + "\n")
 
+def read_file(file_name):
+    """
+    Output: a list of input
+        Each input is list of 9 letter
+    """
+    with open(file_name) as open_file:
+        data = open_file.read()
+
+    data = data.split()
+    inputs = []
+    for line in data:
+        inputs.append(list(line))
+    return inputs 
