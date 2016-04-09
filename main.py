@@ -9,13 +9,11 @@ import collections
 
 import ai_lib.ai_io as ai_io
 import ai_lib.ai_helper as ai_helper
-import algorithms.pn_greedy_02 as pn_greedy_02
-import algorithms.pn_greedy_03 as pn_greedy_03
+from algorithms.pn_greedy_02 import PNGreedy
 
 # global
 algorithms = collections.OrderedDict()
-algorithms['1'] = pn_greedy_02
-algorithms['2'] = pn_greedy_03
+algorithms['1'] = PNGreedy
 
 
 def main():
@@ -27,7 +25,7 @@ def main():
 
     print("Choose one of these algorithms to run:")
     for key, value in algorithms.items():
-        print("{}. {}".format(key, value.__str__()))
+        print("{}. {}".format(key, value.NAME))
     choice = raw_input("[{}]: ".format(''.join([i for i in algorithms.keys()])))
 
     trace = raw_input("Enable tracing? [Yn]: ")
@@ -42,7 +40,8 @@ def main():
     time = 0
     for i in inputs:
         start_time = datetime.datetime.now()  # start time of 1 input
-        result = algorithms[choice].main(i, trace)
+        algorithm = algorithms[choice](i)
+        result = algorithm.execute(trace)
         if result != False:
             end_time = datetime.datetime.now()  # end time of 1 input
             time += (end_time - start_time).total_seconds()
