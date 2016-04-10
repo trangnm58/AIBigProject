@@ -21,11 +21,15 @@ algorithms['1'] = AlgorithmPart2
 algorithms['2'] = AlgorithmPart3
 
 def main():
-    num_of_input = int(raw_input("How many inputs?: "))
-    # get random 'num_of_input' from input library
-    # put 'num_of_input' inputs in 'input' file
-    ai_io.create_input(num_of_input)
-    print "{} inputs is generated in file 'input'\n".format(num_of_input)
+    creat_new_input = raw_input("Create new set of input? [Yn]: ")
+    if creat_new_input == "" or creat_new_input.lower() == 'y':
+        num_of_input = int(raw_input("How many?: "))
+        # get random 'num_of_input' from input library
+        # put 'num_of_input' inputs in 'input' file
+        ai_io.create_input(num_of_input)
+        print "{} inputs is generated in file 'input'\n".format(num_of_input)
+    else:
+        print "Use old inputs in file 'input'\n"
 
     # read inputs
     inputs = ai_io.read_input()  # a list of 'num_of_input' stored in 'input' file
