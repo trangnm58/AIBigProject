@@ -11,11 +11,17 @@ class PNGreedy:
     NAME = 'PNGreedy'
     PREVIOUS = {1: 0, 2: 1, 3: 0, 4: 3, 5: 4, 6: 3, 7: 6, 8: 7}
 
-    def __init__(self, letters):
-        self.OneD_letters = [j for i in letters for j in i]
-        self.freq_dict = ai_helper.get_frequency_dict(self.OneD_letters)
+    def __init__(self, inputs):
+        self.inputs = inputs  # a list of n inputs
+        self.results = []  # a list of n results
 
-    def heuristic(self, state):
+        # START: Find freq_dict for each input in inputs
+        self.freq_dicts = []
+        for i in self.inputs:
+            self.freq_dicts.append(ai_helper.get_frequency_dict(i))
+        # END
+
+    def heuristic(self, state, index):
         score = 0
 
         if len(state) == 3:
@@ -39,7 +45,7 @@ class PNGreedy:
 
         for i in range(1, len(state)):
             try:
-                freq = self.freq_dict[state[PNGreedy.PREVIOUS[i]] + state[i]]
+                freq = self.freq_dicts[index][state[PNGreedy.PREVIOUS[i]] + state[i]]
             except Exception:
                 continue
             else:
@@ -47,46 +53,73 @@ class PNGreedy:
         return score
 
     def execute(self, trace):
-        l = []
+        # Loop through all inputs in 'inputs' list
+        for i in range(len(self.inputs)):
+            L = []  # a list of all states
 
-        for letter in self.OneD_letters:
-            if (letter, 0) not in l:
-                l.append((letter, 0))
-
-        while True:
-            if len(l) == 0:
-                return False
-            u = l.pop(0)[0]
-            letters_cp = self.OneD_letters[:]  # copy of the original list of letters
-            for i in u:
-                letters_cp.remove(i)
-
-            if len(u) == 9:
-                return u
-
-            if trace:
-                next_states = []
-
-            for letter in letters_cp:
-                v = u + letter
-                h_v = self.heuristic(v)
-                if h_v == 0:
-                    # skip the state if its heuristic value is 0
-                    continue
-
-                for i in range(len(l)):
-                    if h_v > l[i][1]:
-                        l.insert(i, (v, h_v))
+            # START: Insert all letter in self.inputs[i] into L
+            # this is where initial states are created
+            for letter in self.inputs[i]:
+                # get frequency of 'letter'
+                freq = self.freq_dicts[i][letter]
+                
+                # insert (letter, freq) into L and keep L sorted
+                for j in range(len(L)):
+                    if freq > L[j][1]:
+                        L.insert(j, (letter, freq))
                         break
                 else:
-                    l.append((v, h_v))
-                if trace:
-                    next_states.append("H({}) = {}".format(v, h_v))
+                    L.append((letter, freq))
+            # END
 
-            if trace:
-                print("Current state: {}".format(u))
-                print("Depth: {}".format(len(u)))
-                print("Children:")
-                for state in next_states:
-                    print(state)
+            while True:
+                if len(L) == 0:
+                    # can not find the result
+                    self.results.append("None")
+                    break
+
+                current_state = L.pop(0)[0]
+
+                if len(current_state) == 9:
+                    # Found the result
+                    self.results.append(current_state)
+                    break
+
+                # START: Find a list of remain letters (letters that are not in current_state)
+                letters_left = self.inputs[i][:]
+                for letter in current_state:
+                    letters_left.remove(letter)
+                # END
+
+                if trace:
+                    next_states = []
+
+                for letter in letters_left:
+                    next_state = current_state + letter
+                    h_next = self.heuristic(next_state, i)  # the heuristic value of 'next_state'
+                    if h_next == 0:
+                        # skip the state if its heuristic value is 0
+                        continue
+
+                    # START: Insert 'next_state' into L and keep L sorted
+                    for j in range(len(L)):
+                        if h_next > L[j][1]:
+                            L.insert(j, (next_state, h_next))
+                            break
+                    else:
+                        L.append((next_state, h_next))
+                    # END
+
+                    if trace:
+                        next_states.append("H({}) = {}".format(next_state, h_next))
+
+                if trace:
+                    print("Current state: {}".format(current_state))
+                    print("Depth: {}".format(len(current_state)))
+                    print("Children:")
+                    for state in next_states:
+                        print(state)
+        # print the results
+        for i in self.results:
+            print(i)
 

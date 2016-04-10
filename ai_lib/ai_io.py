@@ -28,7 +28,7 @@ def create_input(num_of_input):
 
 def read_input():
     """
-    Output: a list of 2D list of letters
+    Output: a list of 1D list of letters
     """
     with open("input") as open_file:
         data = open_file.read()
@@ -36,8 +36,8 @@ def read_input():
     data = data.split()
     inputs = []
     for line in data:
-        inputs.append([line[0:3], line[3:6], line[6:9]])
-    return inputs 
+        inputs.append(list(line))
+    return inputs
 
 def has_meaning(*letters):
     """
@@ -57,6 +57,8 @@ def get_frequency(*letters):
     Output: the frequency of those in the dictionary
     """
     pair = ' '.join(letters)
+    if letters[0] == '$':
+        pair = '\\' + pair
 
     line = re.search(pair + r'\s0[\d.]*', freq_list, re.I).group()
 
