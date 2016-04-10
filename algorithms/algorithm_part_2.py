@@ -1,14 +1,11 @@
-#========================
-# Page Nguyen
-# 2016/04/05
-#========================
+import datetime
 
 import ai_lib.ai_io as ai_io
 import ai_lib.ai_helper as ai_helper
 
 
-class PNGreedy:
-    NAME = 'PNGreedy'
+class AlgorithmPart2:
+    NAME = 'AlgorithmPart2'
     PREVIOUS = {1: 0, 2: 1, 3: 0, 4: 3, 5: 4, 6: 3, 7: 6, 8: 7}
 
     def __init__(self, inputs):
@@ -45,16 +42,19 @@ class PNGreedy:
 
         for i in range(1, len(state)):
             try:
-                freq = self.freq_dicts[index][state[PNGreedy.PREVIOUS[i]] + state[i]]
+                freq = self.freq_dicts[index][state[AlgorithmPart2.PREVIOUS[i]] + state[i]]
             except Exception:
                 continue
             else:
                 score += freq
         return score
 
-    def execute(self, trace):
+    def execute(self, trace, pause):
         # Loop through all inputs in 'inputs' list
         for i in range(len(self.inputs)):
+            num_of_states = 0
+            start_time = datetime.datetime.now()
+
             L = []  # a list of all states
 
             # START: Insert all letter in self.inputs[i] into L
@@ -79,10 +79,15 @@ class PNGreedy:
                     break
 
                 current_state = L.pop(0)[0]
+                
+                # increment number of states
+                num_of_states += 1
 
                 if len(current_state) == 9:
                     # Found the result
-                    self.results.append(current_state)
+                    end_time = datetime.datetime.now()
+                    time = int((end_time - start_time).total_seconds() * 1000)
+                    self.results.append((current_state, num_of_states, time))
                     break
 
                 # START: Find a list of remain letters (letters that are not in current_state)
@@ -116,10 +121,9 @@ class PNGreedy:
                 if trace:
                     print("Current state: {}".format(current_state))
                     print("Depth: {}".format(len(current_state)))
-                    print("Children:")
-                    for state in next_states:
+                    print("Next states:")
+                    for state in L:
                         print(state)
-        # print the results
-        for i in self.results:
-            print(i)
+                    if pause:
+                        next = raw_input("Next?")
 
