@@ -17,24 +17,27 @@ from algorithms.algorithm_part_3 import AlgorithmPart3
    # key is a number: 1, 2, 3....
    # value is a imported class module
 algorithms = collections.OrderedDict()
-algorithms['1'] = AlgorithmPart2  # PNGreedy is a class
+algorithms['1'] = AlgorithmPart2
 algorithms['2'] = AlgorithmPart3
 
 def main():
-    creat_new_input = raw_input("Create new set of input? [Yn]: ")
-    if creat_new_input == "" or creat_new_input.lower() == 'y':
-        num_of_input = int(raw_input("How many?: "))
-        # create 'num_of_input' inputs in 'input' file
-        ai_io.create_input(num_of_input)
+    num_of_input = int(raw_input("How many inputs?: "))
+    # get random 'num_of_input' from input library
+    # put 'num_of_input' inputs in 'input' file
+    ai_io.create_input(num_of_input)
+    print "{} inputs is generated in file 'input'\n".format(num_of_input)
 
+    # read inputs
     inputs = ai_io.read_input()  # a list of 'num_of_input' stored in 'input' file
 
+    # select algorithm to run
     print("Choose one of these algorithms to run:")
     for key, value in algorithms.items():
         print("{}. {}".format(key, value.NAME))  # 'NAME' is static attribute of class 'value'
     choice = raw_input("[{}]: ".format(''.join([i for i in algorithms.keys()])))
 
-    trace = raw_input("Enable tracing? [Yn]: ")
+    # setup
+    trace = raw_input("\nEnable tracing? [Yn]: ")
     if trace == "" or trace.lower() == 'y':
         trace = True
     else:
@@ -48,9 +51,11 @@ def main():
 
     # initialize algorithm object with 'inputs' list
     algorithm = algorithms[choice](inputs)
-    # run it
+    # run the algorithm
+    print "Please wait!"
     algorithm.execute(trace, pause)
 
+    # caculate the result performance according to the returned results
     results = []
     count = 0
     total_time = 0
@@ -64,6 +69,7 @@ def main():
         else:
             results.append("None")
 
+    # Write result to file and print the performance to screen
     result_file = raw_input("\nWrite results to: ")
     if result_file != "":
         ai_io.print_results(results, result_file)

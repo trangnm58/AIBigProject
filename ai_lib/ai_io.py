@@ -9,18 +9,17 @@ with open('ai_lib/3_letters_dictionary') as open_file:
 with open('ai_lib/bigram_frequence_list') as open_file:
     freq_list = open_file.read()
 
+with open('ai_lib/inputs_dict') as open_file:
+    inputs_dict = open_file.read().split()
+
 def create_input(num_of_input):
     """
     Input: Number of inputs need to create
     Output: Print randomly created inputs to "input" file
     """
-    alphabet = list('abcdefghijklmnopqrstuvwxyz')
     inputs = []
     for k in range(num_of_input):
-        letters = ''
-        for i in range(9):
-            letters += random.choice(alphabet)
-        inputs.append(letters)
+        inputs.append(random.choice(inputs_dict))
 
     open_file = open("input", 'w')
     for i in inputs:
