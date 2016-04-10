@@ -24,21 +24,31 @@ class AlgorithmPart3:
         if len(state) == 3:
             if not ai_io.has_meaning(state[0], state[1], state[2]):
                 return 0
+            else:
+                score += 1
         elif len(state) == 6:
             if not ai_io.has_meaning(state[3], state[4], state[5]):
                 return 0
+            else:
+                score += 2
         elif len(state) == 7:
             if (not ai_io.has_meaning(state[0], state[3], state[6])
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
                 return 0
+            else:
+                score += 4
         elif len(state) == 8:
             if not ai_io.has_meaning(state[1], state[4], state[7]):
                 return 0
+            else:
+                score += 5
         elif len(state) == 9:
             if (not ai_io.has_meaning(state[2], state[5], state[8])
                 or not ai_io.has_meaning(state[0], state[4], state[8])
                 or not ai_io.has_meaning(state[6], state[7], state[8])):
                 return 0
+            else:
+                score += 8
 
         for i in range(1, len(state)):
             try:
@@ -52,14 +62,13 @@ class AlgorithmPart3:
         for letter in state:
             letters_left.remove(letter)
 
-        weight = len(state) / 2
         for letter in letters_left:
             try:
                 freq = self.freq_dicts[index][state[AlgorithmPart3.PREVIOUS[len(state)]] + letter]
             except Exception:
                 continue
             else:
-                score += weight * freq
+                score += 2 * freq
         return score
 
     def execute(self, trace, pause):
@@ -67,6 +76,13 @@ class AlgorithmPart3:
         for i in range(len(self.inputs)):
             num_of_states = 0
             start_time = datetime.datetime.now()
+
+            if ai_helper.check_all(self.inputs[i]):
+                # the input is the result already
+                end_time = datetime.datetime.now()
+                time = int((end_time - start_time).total_seconds() * 1000)
+                self.results.append((self.inputs[i], 1, time))
+                continue
 
             L = []  # a list of all states
 
@@ -77,12 +93,13 @@ class AlgorithmPart3:
                 freq = self.freq_dicts[i][letter]
                 
                 # insert (letter, freq) into L and keep L sorted
-                for j in range(len(L)):
-                    if freq > L[j][1]:
-                        L.insert(j, (letter, freq))
-                        break
-                else:
-                    L.append((letter, freq))
+                if (letter, freq) not in L:
+                    for j in range(len(L)):
+                        if freq > L[j][1]:
+                            L.insert(j, (letter, freq))
+                            break
+                    else:
+                        L.append((letter, freq))
             # END
 
             while True:
@@ -120,12 +137,13 @@ class AlgorithmPart3:
                         continue
 
                     # START: Insert 'next_state' into L and keep L sorted
-                    for j in range(len(L)):
-                        if h_next > L[j][1]:
-                            L.insert(j, (next_state, h_next))
-                            break
-                    else:
-                        L.append((next_state, h_next))
+                    if (next_state, h_next) not in L:
+                        for j in range(len(L)):
+                            if h_next > L[j][1]:
+                                L.insert(j, (next_state, h_next))
+                                break
+                        else:
+                            L.append((next_state, h_next))
                     # END
 
                     if trace:

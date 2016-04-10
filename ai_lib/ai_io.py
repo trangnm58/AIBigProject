@@ -2,7 +2,7 @@ import re
 import random
 
 
-# read 2 given files once when this module is imported
+# read 3 given files once when this module is imported
 with open('ai_lib/3_letters_dictionary') as open_file:
     letters_dict = open_file.read()
 
@@ -19,7 +19,13 @@ def create_input(num_of_input):
     """
     inputs = []
     for k in range(num_of_input):
-        inputs.append(random.choice(inputs_dict))
+        ip = list(random.choice(inputs_dict))
+        # rearrange order
+        ip_reorder = ""
+        for i in range(len(ip)):
+            ip_reorder += random.choice(ip)
+            ip.remove(ip_reorder[len(ip_reorder) - 1])
+        inputs.append(ip_reorder)
 
     open_file = open("input", 'w')
     for i in inputs:

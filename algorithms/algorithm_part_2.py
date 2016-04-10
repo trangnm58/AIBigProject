@@ -64,12 +64,13 @@ class AlgorithmPart2:
                 freq = self.freq_dicts[i][letter]
                 
                 # insert (letter, freq) into L and keep L sorted
-                for j in range(len(L)):
-                    if freq > L[j][1]:
-                        L.insert(j, (letter, freq))
-                        break
-                else:
-                    L.append((letter, freq))
+                if (letter, freq) not in L:
+                    for j in range(len(L)):
+                        if freq > L[j][1]:
+                            L.insert(j, (letter, freq))
+                            break
+                    else:
+                        L.append((letter, freq))
             # END
 
             while True:
@@ -107,12 +108,13 @@ class AlgorithmPart2:
                         continue
 
                     # START: Insert 'next_state' into L and keep L sorted
-                    for j in range(len(L)):
-                        if h_next > L[j][1]:
-                            L.insert(j, (next_state, h_next))
-                            break
-                    else:
-                        L.append((next_state, h_next))
+                    if (next_state, h_next) not in L:
+                        for j in range(len(L)):
+                            if h_next > L[j][1]:
+                                L.insert(j, (next_state, h_next))
+                                break
+                        else:
+                            L.append((next_state, h_next))
                     # END
 
                     if trace:

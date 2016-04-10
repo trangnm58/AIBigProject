@@ -18,6 +18,25 @@ def to_two_d(letters):
     """
     return [letters[0:3], letters[3:6], letters[6:9]]
 
+def check_all(letters):
+    """
+    Input: 1D tuple or 1D list of letters
+    Output: True of all words have meanings, False otherwise
+    """
+    flag = True
+    letters_cp = to_two_d(letters)
+    for i in range(0,3):
+        # check row i and col i
+        if (not ai_io.has_meaning(letters_cp[i][0], letters_cp[i][1], letters_cp[i][2]) or
+            not ai_io.has_meaning(letters_cp[0][i], letters_cp[1][i], letters_cp[2][i])):
+            flag = False
+            break
+    # check diagons
+    if (not ai_io.has_meaning(letters_cp[0][0], letters_cp[1][1], letters_cp[2][2]) or
+        not ai_io.has_meaning(letters_cp[0][2], letters_cp[1][1], letters_cp[2][0])):
+        flag = False
+    return flag
+
 def get_frequency_dict(letters):
     """
     Input: 1D list of letters
