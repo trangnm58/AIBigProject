@@ -22,31 +22,45 @@ class AlgorithmPart2:
         score = 0
 
         if len(state) == 3:
+            # check the first row
             if not ai_io.has_meaning(state[0], state[1], state[2]):
+                # the first row has no meaning
                 return 0
         elif len(state) == 6:
+            # check the second row
             if not ai_io.has_meaning(state[3], state[4], state[5]):
+                # the second row has no meaning
                 return 0
         elif len(state) == 7:
+            # check the first column and the right-left diagonal
             if (not ai_io.has_meaning(state[0], state[3], state[6])
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
+                # first column and the right-left diagonal have no meanings
                 return 0
         elif len(state) == 8:
+            # check the second column
             if not ai_io.has_meaning(state[1], state[4], state[7]):
+                # the second column has no meaning
                 return 0
         elif len(state) == 9:
+            # check the third column, the third row and the left-right diagonal
             if (not ai_io.has_meaning(state[2], state[5], state[8])
                 or not ai_io.has_meaning(state[0], state[4], state[8])
                 or not ai_io.has_meaning(state[6], state[7], state[8])):
+                # the third column, the third row and the left-right diagonal have no meanings
                 return 0
 
+        # START: Accumulate the frequency of each pair of letters in 'state'
         for i in range(1, len(state)):
             try:
+                # state[i] is the current letter
+                # state[AlgorithmPart2.PREVIOUS[i]] is the letter that precedes state[i]
                 freq = self.freq_dicts[index][state[AlgorithmPart2.PREVIOUS[i]] + state[i]]
             except Exception:
                 continue
             else:
                 score += freq
+        # END
         return score
 
     def execute(self, trace, pause):
@@ -91,7 +105,7 @@ class AlgorithmPart2:
                     self.results.append((current_state, num_of_states, time))
                     break
 
-                # START: Find a list of remain letters (letters that are not in current_state)
+                # START: Find a list of remaining letters (letters that are not in current_state)
                 letters_left = self.inputs[i][:]
                 for letter in current_state:
                     letters_left.remove(letter)

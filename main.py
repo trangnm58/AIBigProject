@@ -1,9 +1,3 @@
-#========================
-# Page Nguyen
-# 2016/03/24
-# Main program
-#========================
-
 import datetime
 import collections
 
