@@ -53,11 +53,14 @@ def main():
         pause = input_func("Execute step by step? [Yn]: ")
         if pause == "" or pause.lower() == 'y':
             pause = True
+        else:
+            pause = False
 
     # initialize algorithm object with 'inputs' list
     algorithm = algorithms[choice](inputs)
     # run the algorithm
     print("Please wait!")
+    print(trace, pause)
     algorithm.execute(trace, pause)
 
     # caculate the result performance according to the returned results
