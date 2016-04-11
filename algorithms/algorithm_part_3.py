@@ -21,34 +21,34 @@ class AlgorithmPart3:
     def heuristic(self, state, index):
         score = 0
 
-        if len(state) == 3:
+        if len(state) >= 3:
             if not ai_io.has_meaning(state[0], state[1], state[2]):
                 return 0
             else:
                 score += 1
-        elif len(state) == 6:
+        if len(state) >= 6:
             if not ai_io.has_meaning(state[3], state[4], state[5]):
                 return 0
             else:
-                score += 2
-        elif len(state) == 7:
+                score += 1
+        if len(state) >= 7:
             if (not ai_io.has_meaning(state[0], state[3], state[6])
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
                 return 0
             else:
-                score += 4
-        elif len(state) == 8:
+                score += 2
+        if len(state) >= 8:
             if not ai_io.has_meaning(state[1], state[4], state[7]):
                 return 0
             else:
-                score += 5
-        elif len(state) == 9:
+                score += 1
+        if len(state) >= 9:
             if (not ai_io.has_meaning(state[2], state[5], state[8])
                 or not ai_io.has_meaning(state[0], state[4], state[8])
                 or not ai_io.has_meaning(state[6], state[7], state[8])):
-                return 0
+                return 3
             else:
-                score += 8
+                score += 1
 
         for i in range(1, len(state)):
             try:
