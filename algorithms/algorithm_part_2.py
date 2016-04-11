@@ -141,5 +141,8 @@ class AlgorithmPart2:
                     for state in L:
                         print(state)
                     if pause:
-                        next = raw_input("Next?")
+                        try:
+                            next = raw_input("Next?")
+                        except:
+                            next = input("Next?")
 
