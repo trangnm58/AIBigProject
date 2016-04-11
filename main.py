@@ -21,15 +21,22 @@ algorithms['1'] = AlgorithmPart2
 algorithms['2'] = AlgorithmPart3
 
 def main():
-    creat_new_input = raw_input("Create new set of input? [Yn]: ")
+    try:
+        # python version is 2.x
+        input_func = raw_input
+    except:
+        # python version is 3.x
+        input_func = input
+
+    creat_new_input = input_func("Create new set of input? [Yn]: ")
     if creat_new_input == "" or creat_new_input.lower() == 'y':
-        num_of_input = int(raw_input("How many?: "))
+        num_of_input = int(input_func("How many?: "))
         # get random 'num_of_input' from input library
         # put 'num_of_input' inputs in 'input' file
         ai_io.create_input(num_of_input)
-        print "{} inputs is generated in file 'input'\n".format(num_of_input)
+        print("{} inputs is generated in file 'input'\n".format(num_of_input))
     else:
-        print "Use old inputs in file 'input'\n"
+        print("Use old inputs in file 'input'\n")
 
     # read inputs
     inputs = ai_io.read_input()  # a list of 'num_of_input' stored in 'input' file
@@ -38,10 +45,10 @@ def main():
     print("Choose one of these algorithms to run:")
     for key, value in algorithms.items():
         print("{}. {}".format(key, value.NAME))  # 'NAME' is static attribute of class 'value'
-    choice = raw_input("[{}]: ".format(''.join([i for i in algorithms.keys()])))
+    choice = input_func("[{}]: ".format(''.join([i for i in algorithms.keys()])))
 
     # setup
-    trace = raw_input("\nEnable tracing? [Yn]: ")
+    trace = input_func("\nEnable tracing? [Yn]: ")
     if trace == "" or trace.lower() == 'y':
         trace = True
     else:
@@ -49,14 +56,14 @@ def main():
 
     pause = False
     if trace:
-        pause = raw_input("Execute step by step? [Yn]: ")
+        pause = input_func("Execute step by step? [Yn]: ")
         if pause == "" or pause.lower() == 'y':
             pause = True
 
     # initialize algorithm object with 'inputs' list
     algorithm = algorithms[choice](inputs)
     # run the algorithm
-    print "Please wait!"
+    print("Please wait!")
     algorithm.execute(trace, pause)
 
     # caculate the result performance according to the returned results
@@ -74,14 +81,14 @@ def main():
             results.append("None")
 
     # Write result to file and print the performance to screen
-    result_file = raw_input("\nWrite results to: ")
+    result_file = input_func("\nWrite results to: ")
     if result_file != "":
         ai_io.print_results(results, result_file)
-    print "\nThere are {} cases have result in {} cases".format(count, len(algorithm.results))
+    print("\nThere are {} cases have result in {} cases".format(count, len(algorithm.results)))
     if count > 0:
-        print "Average"
-        print "Time: {} miliseconds".format(total_time / count)
-        print "State: {} states".format(total_state / count)
+        print("Average")
+        print("Time: {} miliseconds".format(total_time / count))
+        print("State: {} states".format(total_state / count))
 
 
 main()
