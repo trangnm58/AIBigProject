@@ -73,12 +73,12 @@ class AlgorithmPart3:
             for letter in letters_left:
                 if ai_io.has_meaning(state[3], state[4], letter):
                     score += 0.001
-                for j in AlgorithmPart3.PREVIOUS[len_state]:
-                    try:
-                        score += self.freq_dicts[index][state[j] + letter] * weight
-                    except Exception:
-                        score -= 0.001
-                        break
+                    for j in AlgorithmPart3.PREVIOUS[len_state]:
+                        try:
+                            score += self.freq_dicts[index][state[j] + letter] * weight
+                        except Exception:
+                            score -= 0.001
+                            break
             # END
 
         elif len(state) == 6:
