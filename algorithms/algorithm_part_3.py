@@ -81,7 +81,7 @@ class AlgorithmPart3:
                             break
             # END
 
-        elif len(state) == 6:
+        elif len_state == 6:
             # check the second row
             if not ai_io.has_meaning(state[3], state[4], state[5]):
                 # the second row has no meaning
@@ -93,7 +93,7 @@ class AlgorithmPart3:
                         score += 0.002
                 # END
 
-        elif len(state) == 7:
+        elif len_state == 7:
             # check the first column and the right-left diagonal
             if (not ai_io.has_meaning(state[0], state[3], state[6])
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
@@ -106,7 +106,7 @@ class AlgorithmPart3:
                         score += 0.004
                 # END
 
-        elif len(state) == 8:
+        elif len_state == 8:
             # check the second column
             if not ai_io.has_meaning(state[1], state[4], state[7]):
                 # the second column has no meaning
@@ -121,7 +121,7 @@ class AlgorithmPart3:
                         score += 3
                 # END
 
-        elif len(state) == 9:
+        elif len_state == 9:
             # check the third column, the third row and the left-right diagonal
             if (not ai_io.has_meaning(state[2], state[5], state[8])
                 or not ai_io.has_meaning(state[0], state[4], state[8])
