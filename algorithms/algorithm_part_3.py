@@ -6,7 +6,16 @@ import ai_lib.ai_helper as ai_helper
 
 class AlgorithmPart3:
     NAME = 'AlgorithmPart3'
-    PREVIOUS = {1: 0, 2: 1, 3: 0, 4: 3, 5: 4, 6: 3, 7: 6, 8: 7}
+    PREVIOUS = {
+        1: [0],
+        2: [1],
+        3: [0],
+        4: [0, 1, 2, 3],
+        5: [2, 4],
+        6: [3, 4],
+        7: [4, 6],
+        8: [4, 5, 7]
+    }
 
     def __init__(self, inputs):
         self.inputs = inputs  # a list of n inputs
@@ -26,7 +35,7 @@ class AlgorithmPart3:
             if not ai_io.has_meaning(state[0], state[1], state[2]):
                 return 0
             else:
-                score += 1
+                score += 0.5
         if len(state) >= 6:
             # check the second row
             if not ai_io.has_meaning(state[3], state[4], state[5]):
@@ -39,32 +48,34 @@ class AlgorithmPart3:
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
                 return 0
             else:
-                score += 2
+                score += 2.5
         if len(state) >= 8:
             # check the second column
             if not ai_io.has_meaning(state[1], state[4], state[7]):
                 return 0
             else:
-                score += 1
-        if len(state) >= 9:
+                score += 5
+        if len(state) == 9:
             # check the third column, the third row and the left-right diagonal
             if (not ai_io.has_meaning(state[2], state[5], state[8])
                 or not ai_io.has_meaning(state[0], state[4], state[8])
                 or not ai_io.has_meaning(state[6], state[7], state[8])):
-                return 3
+                return 0
             else:
-                score += 1
+                score += 10
 
+        weight = 100
         # START: Accumulate the frequency of each pair of letters in 'state'
         for i in range(1, len(state)):
-            try:
-                # state[i] is the current letter
-                # state[AlgorithmPart2.PREVIOUS[i]] is the letter that precedes state[i]
-                freq = self.freq_dicts[index][state[AlgorithmPart3.PREVIOUS[i]] + state[i]]
-            except Exception:
-                continue
-            else:
-                score += freq
+            for j in AlgorithmPart3.PREVIOUS[i]:
+                try:
+                    # state[i] is the current letter
+                    # state[j] is one of the letter that precedes state[i]
+                    freq = self.freq_dicts[index][state[j] + state[i]]
+                except Exception:
+                    continue
+                else:
+                    score += weight * freq
         # END
 
         # START: Find a list of remaining letters (letters that are not in 'state')
@@ -75,17 +86,18 @@ class AlgorithmPart3:
 
         # START: Accumulate the frequency of each letter in
             # 'letters_left' and a letter in 'state' that precedes it
-        weight = 2
+
         for letter in letters_left:
-            try:
-                # 'letter' is one of the remaining letter
-                # state[AlgorithmPart3.PREVIOUS[len(state)]] is the letter that
-                    # precedes 'letter' IF 'letter' is add to the 'state'
-                freq = self.freq_dicts[index][state[AlgorithmPart3.PREVIOUS[len(state)]] + letter]
-            except Exception:
-                continue
-            else:
-                score += weight * freq
+            for j in AlgorithmPart3.PREVIOUS[len(state)]:
+                try:
+                    # 'letter' is one of the remaining letter
+                    # state[j] is one of the letter that
+                        # precedes 'letter' IF 'letter' is add to the 'state'
+                    freq = self.freq_dicts[index][state[j] + letter]
+                except Exception:
+                    continue
+                else:
+                    score += freq
         # END
         return score
 
