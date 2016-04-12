@@ -43,7 +43,7 @@ class AlgorithmPart3:
             # START: add score for each letter left which makes the first row has meaning
             for letter in letters_left:
                 try:
-                    score += self.freq_dicts[index][state[0] + letter]
+                    score += self.freq_dicts[index][state[0] + letter] * weight
                 except Exception:
                     pass
                 if ai_io.has_meaning(state[0], state[1], letter):
@@ -66,10 +66,6 @@ class AlgorithmPart3:
                             # this 'letter' does not have a frequency with one of the previous letters
                             score = now_score  # reset score
                             break
-                if score == 0.001:
-                    # there is no letter in 'letters_left' that can go in the next position
-                    return 0
-
         elif len_state == 5:
             # START: add score for each letter left which makes the second row has meaning
             for letter in letters_left:
@@ -133,7 +129,7 @@ class AlgorithmPart3:
                 return 10
 
         # START: Accumulate the frequency of each pair of letters in 'state'
-        for i in range(1, len(state)):
+        for i in range(1, len_state):
             for j in AlgorithmPart3.PREVIOUS[i]:
                 try:
                     # state[i] is the current letter
@@ -144,6 +140,7 @@ class AlgorithmPart3:
                 else:
                     score += freq
         # END
+
         return score
 
     def execute(self, trace, pause):
