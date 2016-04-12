@@ -42,8 +42,9 @@ def main():
     choice = input_func("[{}]: ".format(''.join([i for i in algorithms.keys()])))
 
     # setup
-    trace = input_func("\nEnable tracing? [Yn]: ")
-    if trace == "" or trace.lower() == 'y':
+    print("Note: Running in Tracing mode effects the time but not the number of states")
+    trace = input_func("Enable tracing? [yN]: ")
+    if trace.lower() == 'y':
         trace = True
     else:
         trace = False
