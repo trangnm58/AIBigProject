@@ -6,6 +6,16 @@ import ai_lib.ai_helper as ai_helper
 
 class AlgorithmPart3:
     NAME = 'AlgorithmPart3'
+    PREVIOUS = {
+        1: [0],
+        2: [1],
+        3: [0],
+        4: [0, 1, 2, 3],
+        5: [2, 4],
+        6: [3, 4],
+        7: [4, 6],
+        8: [4, 5, 7]
+    }
 
     def __init__(self, inputs):
         self.inputs = inputs  # a list of n inputs
@@ -17,34 +27,110 @@ class AlgorithmPart3:
             self.freq_dicts.append(ai_helper.get_frequency_dict(i))
         # END
 
-    def heuristic(self, state, index, recur=False):
+    def heuristic(self, state, index):
         score = 0
 
-        if len(state) >= 3 and len(state) <= 5:
+        # START: Find a list of remaining letters (letters that are not in 'state')
+        letters_left = self.inputs[index][:]
+        for letter in state:
+            letters_left.remove(letter)
+        # END
+
+        len_state = len(state)
+
+        if len_state == 2:
+            # START: add score for each letter left which makes the first row has meaning
+            for letter in letters_left:
+                try:
+                    score += self.freq_dicts[index][state[0] + letter] / 50
+                except Exception:
+                    pass
+                if ai_io.has_meaning(state[0], state[1], letter):
+                    score += 0.001
+            # END
+
+        elif len_state == 3:
             # check the first row
             if not ai_io.has_meaning(state[0], state[1], state[2]):
                 return 0
             else:
-                score += 0.005
-        elif len(state) == 6:
+                score += 0.001  # score of the first row
+                for letter in letters_left:
+                    now_score = score  # the score before add 'letter' to 'state'
+                    for j in AlgorithmPart3.PREVIOUS[len_state]:
+                        try:
+                            score += self.freq_dicts[index][state[j] + letter] / 50
+                        except Exception:
+                            # this 'letter' does not have a frequency with one of the previous letters
+                            score = now_score  # reset score
+                            break
+                if score == 0.001:
+                    # there is no letter in 'letters_left' that can go in the next position
+                    return 0
+
+        elif len_state == 4:
+            score += 0.001  # score of the first row
+            for letter in letters_left:
+                now_score = score  # the score before add 'letter' to 'state'
+                for j in AlgorithmPart3.PREVIOUS[len_state]:
+                    try:
+                        score += self.freq_dicts[index][state[j] + letter] / 50
+                    except Exception:
+                        # this 'letter' does not have a frequency with one of the previous letters
+                        score = now_score  # reset score
+                        break
+            if score == 0.001:
+                # there is no letter in 'letters_left' that can go in the next position
+                return 0
+
+        elif len_state == 5:
+            # START: add score for each letter left which makes the second row has meaning
+            for letter in letters_left:
+                for j in AlgorithmPart3.PREVIOUS[len_state]:
+                    try:
+                        score += self.freq_dicts[index][state[j] + letter] / 50
+                    except Exception:
+                        pass
+                if ai_io.has_meaning(state[3], state[4], letter):
+                    score += 0.001
+            # END
+
+        elif len_state == 6:
             # check the second row
             if not ai_io.has_meaning(state[3], state[4], state[5]):
                 return 0
             else:
-                score += 0.01
-        elif len(state) == 7:
+                # START: add score for each letter left which makes the first column has meaning
+                for letter in letters_left:
+                    if ai_io.has_meaning(state[0], state[3], letter):
+                        score += 0.002
+                # END
+
+        elif len_state == 7:
             # check the first column and the right-left diagonal
             if (not ai_io.has_meaning(state[0], state[3], state[6])
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
                 return 0
             else:
-                score += 0.025
-        elif len(state) == 8:
+                # START: add score for each letter left which makes the second column has meaning
+                for letter in letters_left:
+                    if ai_io.has_meaning(state[1], state[4], letter):
+                        score += 0.004
+                # END
+
+        elif len_state == 8:
             # check the second column
             if not ai_io.has_meaning(state[1], state[4], state[7]):
                 return 0
             else:
-                score += 0.05
+                # START: add score for each letter left which makes
+                # the third column, the third row and the left-right diagonal has meaning
+                for letter in letters_left:
+                    if (ai_io.has_meaning(state[2], state[5], letter)
+                        and ai_io.has_meaning(state[0], state[4], letter)
+                        and ai_io.has_meaning(state[6], state[7], letter)):
+                        score += 10
+
         elif len(state) == 9:
             # check the third column, the third row and the left-right diagonal
             if (not ai_io.has_meaning(state[2], state[5], state[8])
@@ -52,18 +138,9 @@ class AlgorithmPart3:
                 or not ai_io.has_meaning(state[6], state[7], state[8])):
                 return 0
             else:
+                # this is definitely the result
                 score += 10
 
-        if recur == False:
-            # START: Find a list of remaining letters (letters that are not in 'state')
-            letters_left = self.inputs[index][:]
-            for letter in state:
-                letters_left.remove(letter)
-            # END
-
-            for letter in letters_left:
-                next_state = state + letter
-                score += self.heuristic(next_state, index, recur=True)
         return score
 
     def execute(self, trace, pause):
