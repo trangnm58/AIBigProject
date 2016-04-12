@@ -60,7 +60,6 @@ def main():
     algorithm = algorithms[choice](inputs)
     # run the algorithm
     print("Please wait!")
-    print(trace, pause)
     algorithm.execute(trace, pause)
 
     # caculate the result performance according to the returned results
