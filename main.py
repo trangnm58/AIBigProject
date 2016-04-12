@@ -23,7 +23,7 @@ def main():
         input_func = input
 
     creat_new_input = input_func("Create new set of input? [Yn]: ")
-    if creat_new_input == "" or creat_new_input.lower() == 'y':
+    if creat_new_input != "n":
         num_of_input = int(input_func("How many?: "))
         # get random 'num_of_input' from input library
         # put 'num_of_input' inputs in 'input' file
@@ -52,7 +52,7 @@ def main():
     pause = False
     if trace:
         pause = input_func("Execute step by step? [Yn]: ")
-        if pause == "" or pause.lower() == 'y':
+        if pause != "n":
             pause = True
         else:
             pause = False

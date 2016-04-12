@@ -118,7 +118,7 @@ class AlgorithmPart3:
                     if (ai_io.has_meaning(state[2], state[5], letter)
                         and ai_io.has_meaning(state[0], state[4], letter)
                         and ai_io.has_meaning(state[6], state[7], letter)):
-                        score += 10
+                        score += 3
 
         elif len(state) == 9:
             # check the third column, the third row and the left-right diagonal
