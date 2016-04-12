@@ -37,7 +37,7 @@ class AlgorithmPart3:
         # END
 
         len_state = len(state)
-        weight = 1/50
+        weight = 1.0/50.0
 
         if len_state == 2:
             # START: add score for each letter left which makes the first row has meaning
