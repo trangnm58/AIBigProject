@@ -37,112 +37,80 @@ class AlgorithmPart3:
         # END
 
         len_state = len(state)
-        weight = 1/50
 
         if len_state == 2:
-            # START: add score for each letter left which makes the first row has meaning
             for letter in letters_left:
                 if ai_io.has_meaning(state[0], state[1], letter):
                     score += 0.001
-                else:
-                    try:
-                        score += self.freq_dicts[index][state[0] + letter] * weight
-                    except Exception:
-                        pass
-            # END
-
-        elif len_state == 3 or len_state == 4:
+        elif len_state == 3:
             # check the first row
             if not ai_io.has_meaning(state[0], state[1], state[2]):
-                # the first row has no meaning
                 return 0
             else:
-                score += 0.001  # score of the first row
-                for letter in letters_left:
-                    now_score = score  # the score before add 'letter' to 'state'
-                    for j in AlgorithmPart3.PREVIOUS[len_state]:
-                        try:
-                            score += self.freq_dicts[index][state[j] + letter] * weight
-                        except Exception:
-                            # this 'letter' does not have a frequency with one of the previous letters
-                            score = now_score  # reset score
-                            break
-
+                score += 0.001
+#                for letter in letters_left:
+#                    now_score = score
+#                    for j in AlgorithmPart3.PREVIOUS[len_state]:
+#                        try:
+#                            score += self.freq_dicts[index][state[j] + letter] / 10
+#                        except Exception:
+#                            score = now_score  # reset score
+#                            break
+#                if score == 0.001:
+                    # there is no letter in letters_left that can go in the next position
+#                    return 0
+        elif len_state == 4:
+            score += 0.001
+#            for letter in letters_left:
+#                now_score = score
+#                for j in AlgorithmPart3.PREVIOUS[len_state]:
+#                    try:
+#                        score += self.freq_dicts[index][state[j] + letter] / 10
+#                    except Exception:
+#                        score = now_score  # reset score
+#                        break
+#            if score == 0.001:
+                # there is no letter in letters_left that can go in the next position
+#                return 0
         elif len_state == 5:
-            # START: add score for each letter left which makes the second row has meaning
             for letter in letters_left:
                 if ai_io.has_meaning(state[3], state[4], letter):
                     score += 0.001
-                for j in AlgorithmPart3.PREVIOUS[len_state]:
-                    try:
-                        score += self.freq_dicts[index][state[j] + letter] * weight
-                    except Exception:
-                        score -= 0.001
-                        break
-            # END
-
-        elif len(state) == 6:
+        elif len_state == 6:
             # check the second row
             if not ai_io.has_meaning(state[3], state[4], state[5]):
-                # the second row has no meaning
                 return 0
             else:
-                # START: add score for each letter left which makes the first column has meaning
                 for letter in letters_left:
                     if ai_io.has_meaning(state[0], state[3], letter):
                         score += 0.002
-                # END
-
-        elif len(state) == 7:
+        elif len_state == 7:
             # check the first column and the right-left diagonal
             if (not ai_io.has_meaning(state[0], state[3], state[6])
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
-                # first column and the right-left diagonal have no meanings
                 return 0
             else:
-                # START: add score for each letter left which makes the second column has meaning
                 for letter in letters_left:
                     if ai_io.has_meaning(state[1], state[4], letter):
                         score += 0.004
-                # END
-
-        elif len(state) == 8:
+        elif len_state == 8:
             # check the second column
             if not ai_io.has_meaning(state[1], state[4], state[7]):
-                # the second column has no meaning
                 return 0
             else:
-                # START: add score for each letter left which makes
-                # the third column, the third row and the left-right diagonal has meaning
                 for letter in letters_left:
                     if (ai_io.has_meaning(state[2], state[5], letter)
                         and ai_io.has_meaning(state[0], state[4], letter)
                         and ai_io.has_meaning(state[6], state[7], letter)):
                         score += 10
-
         elif len(state) == 9:
             # check the third column, the third row and the left-right diagonal
             if (not ai_io.has_meaning(state[2], state[5], state[8])
                 or not ai_io.has_meaning(state[0], state[4], state[8])
                 or not ai_io.has_meaning(state[6], state[7], state[8])):
-                # the third column, the third row and the left-right diagonal have no meanings
                 return 0
             else:
-                # this is definitely the result
-                return 10
-
-        # START: Accumulate the frequency of each pair of letters in 'state'
-        for i in range(1, len_state):
-            for j in AlgorithmPart3.PREVIOUS[i]:
-                try:
-                    # state[i] is the current letter
-                    # state[j] is one of the letters that precedes state[i]
-                    freq = self.freq_dicts[index][state[j] + state[i]] * weight
-                except Exception:
-                    return 0
-                else:
-                    score += freq
-        # END
+                score += 10
 
         return score
 
