@@ -6,16 +6,6 @@ import ai_lib.ai_helper as ai_helper
 
 class AlgorithmPart3:
     NAME = 'AlgorithmPart3'
-    PREVIOUS = {
-        1: [0],
-        2: [1],
-        3: [0],
-        4: [0, 1, 2, 3],
-        5: [2, 4],
-        6: [3, 4],
-        7: [4, 6],
-        8: [4, 5, 7]
-    }
 
     def __init__(self, inputs):
         self.inputs = inputs  # a list of n inputs
@@ -27,35 +17,35 @@ class AlgorithmPart3:
             self.freq_dicts.append(ai_helper.get_frequency_dict(i))
         # END
 
-    def heuristic(self, state, index):
+    def heuristic(self, state, index, recur=False):
         score = 0
 
-        if len(state) >= 3:
+        if len(state) >= 3 and len(state) <= 5:
             # check the first row
             if not ai_io.has_meaning(state[0], state[1], state[2]):
                 return 0
             else:
-                score += 0.5
-        if len(state) >= 6:
+                score += 0.005
+        elif len(state) == 6:
             # check the second row
             if not ai_io.has_meaning(state[3], state[4], state[5]):
                 return 0
             else:
-                score += 1
-        if len(state) >= 7:
+                score += 0.01
+        elif len(state) == 7:
             # check the first column and the right-left diagonal
             if (not ai_io.has_meaning(state[0], state[3], state[6])
                 or not ai_io.has_meaning(state[2], state[4], state[6])):
                 return 0
             else:
-                score += 2.5
-        if len(state) >= 8:
+                score += 0.025
+        elif len(state) == 8:
             # check the second column
             if not ai_io.has_meaning(state[1], state[4], state[7]):
                 return 0
             else:
-                score += 5
-        if len(state) == 9:
+                score += 0.05
+        elif len(state) == 9:
             # check the third column, the third row and the left-right diagonal
             if (not ai_io.has_meaning(state[2], state[5], state[8])
                 or not ai_io.has_meaning(state[0], state[4], state[8])
@@ -64,41 +54,16 @@ class AlgorithmPart3:
             else:
                 score += 10
 
-        weight = 100
-        # START: Accumulate the frequency of each pair of letters in 'state'
-        for i in range(1, len(state)):
-            for j in AlgorithmPart3.PREVIOUS[i]:
-                try:
-                    # state[i] is the current letter
-                    # state[j] is one of the letter that precedes state[i]
-                    freq = self.freq_dicts[index][state[j] + state[i]]
-                except Exception:
-                    continue
-                else:
-                    score += weight * freq
-        # END
+        if recur == False:
+            # START: Find a list of remaining letters (letters that are not in 'state')
+            letters_left = self.inputs[index][:]
+            for letter in state:
+                letters_left.remove(letter)
+            # END
 
-        # START: Find a list of remaining letters (letters that are not in 'state')
-        letters_left = self.inputs[index][:]
-        for letter in state:
-            letters_left.remove(letter)
-        # END
-
-        # START: Accumulate the frequency of each letter in
-            # 'letters_left' and a letter in 'state' that precedes it
-
-        for letter in letters_left:
-            for j in AlgorithmPart3.PREVIOUS[len(state)]:
-                try:
-                    # 'letter' is one of the remaining letter
-                    # state[j] is one of the letter that
-                        # precedes 'letter' IF 'letter' is add to the 'state'
-                    freq = self.freq_dicts[index][state[j] + letter]
-                except Exception:
-                    continue
-                else:
-                    score += freq
-        # END
+            for letter in letters_left:
+                next_state = state + letter
+                score += self.heuristic(next_state, index, recur=True)
         return score
 
     def execute(self, trace, pause):

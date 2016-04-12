@@ -6,7 +6,16 @@ import ai_lib.ai_helper as ai_helper
 
 class AlgorithmPart2:
     NAME = 'AlgorithmPart2'
-    PREVIOUS = {1: 0, 2: 1, 3: 0, 4: 3, 5: 4, 6: 3, 7: 6, 8: 7}
+    PREVIOUS = {
+        1: [0],
+        2: [1],
+        3: [0],
+        4: [0, 1, 2, 3],
+        5: [2, 4],
+        6: [3, 4],
+        7: [4, 6],
+        8: [4, 5, 7]
+    }
 
     def __init__(self, inputs):
         self.inputs = inputs  # a list of n inputs
@@ -52,14 +61,15 @@ class AlgorithmPart2:
 
         # START: Accumulate the frequency of each pair of letters in 'state'
         for i in range(1, len(state)):
-            try:
-                # state[i] is the current letter
-                # state[AlgorithmPart2.PREVIOUS[i]] is the letter that precedes state[i]
-                freq = self.freq_dicts[index][state[AlgorithmPart2.PREVIOUS[i]] + state[i]]
-            except Exception:
-                continue
-            else:
-                score += freq
+            for j in AlgorithmPart2.PREVIOUS[i]:
+                try:
+                    # state[i] is the current letter
+                    # state[j] is one of the letters that precedes state[i]
+                    freq = self.freq_dicts[index][state[j] + state[i]]
+                except Exception:
+                    continue
+                else:
+                    score += freq
         # END
         return score
 
