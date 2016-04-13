@@ -133,6 +133,7 @@ class AlgorithmPart3:
                 # END
 
         if score == 0:
+            # there is no future for this state
             return 0
 
         # START: Accumulate the frequency of each pair of letters in 'state'
@@ -147,7 +148,6 @@ class AlgorithmPart3:
                 else:
                     score += freq
         # END
-
         return score
 
     def execute(self, trace, pause):
