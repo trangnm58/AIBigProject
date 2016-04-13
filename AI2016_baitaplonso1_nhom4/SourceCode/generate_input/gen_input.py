@@ -1,10 +1,13 @@
 with open('../ai_lib/3_letters_dictionary') as open_file:
-    m_dict = open_file.read().split()
+    raw_letters_dict = open_file.read().split()
+letters_dict = {}
+for w in raw_letters_dict:
+    letters_dict[w] = 1
 
 def gen():
-    for w1 in m_dict:
-        for w2 in m_dict:
-            for w3 in m_dict:
+    for w1 in letters_dict:
+        for w2 in letters_dict:
+            for w3 in letters_dict:
                 if check(w1, w2, w3):
                     with open('inputs.txt', 'a') as myfile:
                         myfile.write(w1 + w2 + w3 + '\n')
@@ -18,6 +21,11 @@ def check(w1, w2, w3):
         return True
 
 def check_word(w):
-    return w in m_dict
+    try:
+        temp = letters_dict[w]
+    except Exception:
+        return False
+    else:
+        return True
 
 gen()
