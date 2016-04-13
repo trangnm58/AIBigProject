@@ -53,7 +53,7 @@ class AlgorithmPart3:
 
         elif len_state == 3 or len_state == 4:
             # check the first row
-            if not ai_io.has_meaning(state[0], state[1], state[2]):
+            if len_state == 3 and not ai_io.has_meaning(state[0], state[1], state[2]):
                 # the first row has no meaning
                 return 0
             else:
@@ -112,25 +112,16 @@ class AlgorithmPart3:
                 # the second column has no meaning
                 return 0
             else:
-                # START: add score for each letter left which makes
+                # START: add score for 1 letter left which makes
                 # the third column, the third row and the left-right diagonal has meaning
-                for letter in letters_left:
-                    if (ai_io.has_meaning(state[2], state[5], letter)
-                        and ai_io.has_meaning(state[0], state[4], letter)
-                        and ai_io.has_meaning(state[6], state[7], letter)):
-                        score += 3
+                if (ai_io.has_meaning(state[2], state[5], letters_left[0])
+                    and ai_io.has_meaning(state[0], state[4], letters_left[0])
+                    and ai_io.has_meaning(state[6], state[7], letters_left[0])):
+                    # this is the result
+                    return 10
+                else:
+                    return 0
                 # END
-
-        elif len_state == 9:
-            # check the third column, the third row and the left-right diagonal
-            if (not ai_io.has_meaning(state[2], state[5], state[8])
-                or not ai_io.has_meaning(state[0], state[4], state[8])
-                or not ai_io.has_meaning(state[6], state[7], state[8])):
-                # the third column, the third row and the left-right diagonal have no meanings
-                return 0
-            else:
-                # this is definitely the result
-                return 10
 
         # START: Accumulate the frequency of each pair of letters in 'state'
         for i in range(1, len_state):
@@ -152,13 +143,6 @@ class AlgorithmPart3:
         for i in range(len(self.inputs)):
             num_of_states = 0
             start_time = datetime.datetime.now()
-
-            if ai_helper.check_all(self.inputs[i]):
-                # the input is the result already
-                end_time = datetime.datetime.now()
-                time = int((end_time - start_time).total_seconds() * 1000)
-                self.results.append((self.inputs[i], 1, time))
-                continue
 
             L = []  # a list of all states
 
@@ -189,18 +173,18 @@ class AlgorithmPart3:
                 # increment number of states
                 num_of_states += 1
 
-                if len(current_state) == 9:
-                    # Found the result
-                    end_time = datetime.datetime.now()
-                    time = int((end_time - start_time).total_seconds() * 1000)
-                    self.results.append((current_state, num_of_states, time))
-                    break
-
                 # START: Find a list of remaining letters (letters that are not in current_state)
                 letters_left = self.inputs[i][:]
                 for letter in current_state:
                     letters_left.remove(letter)
                 # END
+
+                if len(current_state) == 8:
+                    # Found the result
+                    end_time = datetime.datetime.now()
+                    time = int((end_time - start_time).total_seconds() * 1000)
+                    self.results.append((current_state + letters_left[0], num_of_states, time))
+                    break
 
                 if trace:
                     next_states = []
