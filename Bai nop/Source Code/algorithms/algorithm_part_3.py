@@ -5,6 +5,9 @@ import ai_lib.ai_helper as ai_helper
 
 
 class AlgorithmPart3:
+    """
+    Description: This algorithm serves part 3's requirements.
+    """
     NAME = 'AlgorithmPart3'
     PREVIOUS = {
         1: [0],
@@ -28,6 +31,13 @@ class AlgorithmPart3:
         # END
 
     def heuristic(self, state, index):
+        """
+        Input:
+            'state': the current state that need to evaluate heuristic value
+            'index': the index of input in 'self.inputs'
+        Output:
+            The heuristic value of state
+        """
         score = 0
 
         # START: Find a list of remaining letters (letters that are not in 'state')
@@ -105,10 +115,9 @@ class AlgorithmPart3:
                 return 0
             else:
                 # START: add score for each letter left which makes the second column has meaning
-                if ai_io.has_meaning(state[1], state[4], letters_left[0]):
-                        score += 0.004
-                if ai_io.has_meaning(state[1], state[4], letters_left[1]):
-                        score += 0.004
+                for letter in letters_left:
+                    if ai_io.has_meaning(state[1], state[4], letter):
+                            score += 0.004
                 # END
                 return score
 

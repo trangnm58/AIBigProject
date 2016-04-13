@@ -5,6 +5,9 @@ import ai_lib.ai_helper as ai_helper
 
 
 class AlgorithmPart2:
+    """
+    Description: This algorithm serves part 2's requirements.
+    """
     NAME = 'AlgorithmPart2'
     PREVIOUS = {
         1: [0],
@@ -28,6 +31,13 @@ class AlgorithmPart2:
         # END
 
     def heuristic(self, state, index):
+        """
+        Input:
+            'state': the current state that need to evaluate heuristic value
+            'index': the index of input in 'self.inputs'
+        Output:
+            The heuristic value of state
+        """
         score = 0
 
         if len(state) == 3:
