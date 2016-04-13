@@ -7,10 +7,14 @@ with open('ai_lib/3_letters_dictionary') as open_file:
     data_letters_dict = open_file.read().split()
 letters_dict = {}
 for word in data_letters_dict:
-    letters_dict[word] = 1
+    letters_dict[word.upper()] = 1
 
 with open('ai_lib/bigram_frequence_list') as open_file:
-    freq_list = open_file.read()
+    data_freq_list = open_file.read().split('\n')
+freq_list = {}
+for line in data_freq_list:
+    if re.search("0[\d.]*", line[4:]) != None:
+        freq_list[line[0:3].upper()] = float(line[4:])
 
 with open('ai_lib/inputs_dict') as open_file:
     inputs_dict = open_file.read().split()
@@ -53,7 +57,7 @@ def has_meaning(*letters):
     Input: a tuple of 3 letters named 'letters'
     Output: True if it has a meaning, False otherwise
     """
-    word = ''.join(letters)
+    word = ''.join(letters).upper()
 
     try:
         temp = letters_dict[word]
@@ -67,13 +71,9 @@ def get_frequency(*letters):
     Input: a tuple of 2 letters named 'letters'
     Output: the frequency of those in the dictionary
     """
-    pair = ' '.join(letters)
-    if letters[0] == '$':
-        pair = '\\' + pair
+    pair = ' '.join(letters).upper()
 
-    line = re.search(pair + r'\s0[\d.]*', freq_list, re.I).group()
-
-    return float(line[4:])
+    return freq_list[pair]
 
 def print_results(results, file_name):
     """

@@ -39,9 +39,10 @@ def main():
     print("Choose one of these algorithms to run:")
     for key, value in algorithms.items():
         print("{}. {}".format(key, value.NAME))  # 'NAME' is static attribute of class 'value'
+    print("3. Run both")
     while True:
-        choice = input_func("[{}]: ".format(''.join([i for i in algorithms.keys()])))
-        if choice == "1" or choice == "2": break
+        choice = input_func("[{}3]: ".format(''.join([i for i in algorithms.keys()])))
+        if choice == "1" or choice == "2" or choice == "3": break
 
     # setup
     print("\nNote: Running in Tracing mode effects the time but not the number of states")
@@ -59,36 +60,95 @@ def main():
         else:
             pause = False
 
-    # initialize algorithm object with 'inputs' list
-    algorithm = algorithms[choice](inputs)
-    # run the algorithm
-    print("Please wait!")
-    algorithm.execute(trace, pause)
+    # Run 1 in 2 algorithm
+    if choice == "1" or choice == "2":
+        print("\nLoading data...")
+        # initialize algorithm object with 'inputs' list
+        algorithm = algorithms[choice](inputs)
+        # run the algorithm
+        print("Algorithm is executing. Please wait!")
+        algorithm.execute(trace, pause)
+        print("Done.")
 
-    # caculate the result performance according to the returned results
-    results = []
-    count = 0
-    total_time = 0
-    total_state = 0
-    for item in algorithm.results:
-        if item != "None":
-            count += 1
-            total_state += item[1]
-            total_time += item[2]
-            results.append(''.join(item[0]))
-        else:
-            results.append("None")
+        # caculate the result performance according to the returned results
+        results = []
+        count = 0
+        total_time = 0
+        total_state = 0
+        for item in algorithm.results:
+            if item != "None":
+                count += 1
+                total_state += item[1]
+                total_time += item[2]
+                results.append(''.join(item[0]))
+            else:
+                results.append("None")
 
-    # Write result to file and print the performance to screen
-    result_file = input_func("\nWrite results to: ")
-    if result_file != "":
-        ai_io.print_results(results, result_file)
-    print("\nThere are {} cases have result in {} cases".format(count, len(algorithm.results)))
-    if count > 0:
-        print("Average")
-        print("Time: {} miliseconds".format(total_time / count))
-        print("State: {} states".format(total_state / count))
+        # Write result to file and print the performance to screen
+        ai_io.print_results(results, "result")
+        print("Result are printed in file 'result'")
+        print("\nThere are {} cases have result in {} cases".format(count, len(algorithm.results)))
+        if count > 0:
+            print("Average")
+            print("Time: {} miliseconds".format(total_time / count))
+            print("State: {} states".format(total_state / count))
+    # Run both 2 algorithm
+    else:
+        print("\nLoading data...")
+        # initialize algorithm object with 'inputs' list
+        algorithm_part_2 = algorithms["1"](inputs)
+        algorithm_part_3 = algorithms["2"](inputs)
+        # run the algorithm
+        print("Algorithm Part 2 is executing.")
+        algorithm_part_2.execute(trace, pause)
+        print("Done.")
+        print("Algorithm Part 3 is executing.")
+        algorithm_part_3.execute(trace, pause)
+        print("Done.")
 
+        # caculate the result performance according to the returned results
+        results_part_2 = []
+        count_part_2 = 0
+        total_time_part_2 = 0
+        total_state_part_2 = 0
+        for item in algorithm_part_2.results:
+            if item != "None":
+                count_part_2 += 1
+                total_state_part_2 += item[1]
+                total_time_part_2 += item[2]
+                results_part_2.append(''.join(item[0]))
+            else:
+                results_part_2.append("None")
+
+        # caculate the result performance according to the returned results
+        results_part_3 = []
+        count_part_3 = 0
+        total_time_part_3 = 0
+        total_state_part_3 = 0
+        for item in algorithm_part_3.results:
+            if item != "None":
+                count_part_3 += 1
+                total_state_part_3 += item[1]
+                total_time_part_3 += item[2]
+                results_part_3.append(''.join(item[0]))
+            else:
+                results_part_3.append("None")
+
+        # Write result to file and print the performance to screen
+        ai_io.print_results(results_part_2, "result_part_2")
+        ai_io.print_results(results_part_3, "result_part_3")
+        print("Result are printed in file 'result_part_2' and 'result_part_3'")
+
+        print("\nThere are {} cases have result in {} cases".format(count_part_2, len(algorithm_part_2.results)))
+
+        if count_part_2 > 0:
+            print("Average Algorithm Part 2")
+            print("Time: {} miliseconds".format(total_time_part_2 / count_part_2))
+            print("State: {} states".format(total_state_part_2 / count_part_2))
+        if count_part_3 > 0:
+            print("Average Algorithm Part 3")
+            print("Time: {} miliseconds".format(total_time_part_3 / count_part_3))
+            print("State: {} states".format(total_state_part_3 / count_part_3))
 
 main()
 
