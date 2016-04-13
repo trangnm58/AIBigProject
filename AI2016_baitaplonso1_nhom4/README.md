@@ -26,6 +26,7 @@ Gồm hàm để sinh ra các bộ kết quả chuẩn từ file từ điển đ
 
   - **main.py**: đây là file được viết để test thuật toán đã được viết. Các bước để test thuật toán sẽ được mô tả chi tiết trong các phần sau của tài liệu.
   - **input**: đây là file đầu vào của main.py. File gồm các bộ input là string gồm 9 ký tự, mỗi bộ input được ghi trên một dòng. File input có thể được cập nhật nếu người dùng tạo mới bộ input trong hàm main hoặc được lưu lại để chạy lần hai để so sánh hai thuật toán.
+  - **result**: các file được sinh ra sau khi chạy thuật toán, chứa kết quả tương ứng với các inputs trong file đầu vào.
 
 # 2. Input và Output
 Input và output của thuật toán đều là string có độ dài 9 ký tự. Output được hiểu là 3 ký tự đầu nằm trên dòng đầu tiên, 3 ký tự tiếp theo nằm trên dòng thứ hai và 3 ký tự cuối cùng nằm trên dòng cuối.
@@ -57,15 +58,25 @@ $
 ```
 
   - **Bước 1**: mở command line hoặc terminal, tìm đến thư mục Source Code
-  - **Bước 2**: chạy lệnh “python main.py”
+  - **Bước 2**: chạy lệnh "python main.py"
   - **Bước 3**: chọn có(y) hoặc không(n) tạo bộ input mới, mặc định là có(y).
-Nếu có tạo bộ input mới thì nhập tiếp số lượng bộ input muốn tạo. Chương trình tự động sinh inputs và lưu vào file “input”
-  - **Bước 4**: lựa chọn thuật toán 1 (**lgorithm_part_2**) hoặc 2 (**algorithm_part_3**).
+Nếu có tạo bộ input mới thì nhập tiếp số lượng bộ input muốn tạo. Chương trình tự động sinh inputs và lưu vào file "input"
+  - **Bước 4**: lựa chọn thuật toán **algorithm_part_2**(1) hoặc **algorithm_part_3**(2) hoặc chạy cả hai thuật toán(3).
   - **Bước 5**: chọn cài đặt có(y) hoặc không(n) lần vết, mặc định là không(n).
 Nếu lựa chọn là có lần vết thì sẽ chọn thêm có(y) hay không(n) thực hiện từng bước, mặc định là có(y). Việc thực hiện từng bước sẽ dễ dàng quan sát được thuật toán thực hiện như thế nào?
-  - **Bước 6**: sau khi thuật toán chạy xong nhập vào nơi ghi kết quả. Nếu không nhập gì kết quả sẽ không được ghi. Màn hình hiển thị số input có kết quả và thời gian, số state đã duyệt trung bình.
+  - **Bước 6**: sau khi thuật toán chạy xong nhập kết quả sẽ được ghi ra file result. Màn hình hiển thị số input có kết quả và thời gian, số state đã duyệt trung bình.
 
 # 4. Lưu ý
 Việc lựa chọn ngẫu nhiên 9 ký tự trong 26 chữ cái của bảng chữ cái tiếng Anh tương đương với việc chọn một phần tử trong số chỉnh hợp lặp chập 9 của 26, tương đương 5.4 nghìn tỷ cách lựa chọn, tuy nhiên số bộ input có kết quả chỉ vào khoảng 3 tỷ bộ. Do đó việc sinh ngẫu nhiên bộ input là không khả thi nên việc sinh input sẽ được thực hiện bằng cách lựa chọn ngẫu nhiên trong từ điển kết quả nhóm đã sinh ra sau đó trộn ngẫu nhiên các ký tự trong chuỗi 9 ký tự. Việc sinh input được thực hiện độc lập và ngẫu nhiên so với việc chạy thuật toán nên kết quả thuật toán chạy được là hoàn toàn khách quan.
 
 # 5. Cách thức thực hiện
+Để thực hiện bài toán, nhóm đã thực hiện qua các giai đoạn:
+
+  - Viết cấu trúc của project gồm các thư viện vào ra. 
+  - Thực hiện tạo các bộ inputs và outputs mẫu.
+  - Viết interface cho class thuật toán gồm các hàm: constructor, heuristic, execute.
+  - Triển khai các thuật toán theo yêu cầu.
+  - Làm mịn thuật toán phần 3 bằng cách bổ sung các hàm cộng và trừ điểm cho hàm đánh giá.
+  - Thực hiện chạy thử trên các bộ inputs và outputs mẫu đã tạo.
+  - Viết hàm main để đánh giá thuật toán.
+  - Viết báo cáo.
