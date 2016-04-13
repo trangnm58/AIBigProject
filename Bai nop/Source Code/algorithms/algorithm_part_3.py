@@ -62,7 +62,7 @@ class AlgorithmPart3:
                 # the first row has no meaning
                 return 0
             else:
-                score += 0.001  # score of the first row
+                score += 0.002  # score of the first row
                 for letter in letters_left:
                     now_score = score  # the score before add 'letter' to 'state'
                     for j in AlgorithmPart3.PREVIOUS[len_state]:
@@ -77,12 +77,13 @@ class AlgorithmPart3:
             # START: add score for each letter left which makes the second row has meaning
             for letter in letters_left:
                 if ai_io.has_meaning(state[3], state[4], letter):
+                    now_score = score  # the score before add 'letter' to 'state'
                     score += 0.001
                     for j in AlgorithmPart3.PREVIOUS[len_state]:
                         try:
                             score += self.freq_dicts[index][state[j] + letter] * weight
                         except Exception:
-                            score -= 0.001
+                            score = now_score  # reset score
                             break
             # END
 
@@ -99,8 +100,6 @@ class AlgorithmPart3:
                         and ai_io.has_meaning(state[2], state[4], letter)):
                         score += 0.002
                 # END
-                if score == 0:
-                    return 0
 
         elif len_state == 7:
             # check the first column and the right-left diagonal
@@ -132,6 +131,9 @@ class AlgorithmPart3:
                 else:
                     return 0
                 # END
+
+        if score == 0:
+            return 0
 
         # START: Accumulate the frequency of each pair of letters in 'state'
         for i in range(1, len_state):
