@@ -87,11 +87,15 @@ class AlgorithmPart3:
                 # the second row has no meaning
                 return 0
             else:
-                # START: add score for each letter left which makes the first column has meaning
+                # START: add score for each letter left which makes
+                # the first column and the right-left diagonal has meaning
                 for letter in letters_left:
-                    if ai_io.has_meaning(state[0], state[3], letter):
+                    if (ai_io.has_meaning(state[0], state[3], letter)
+                        and ai_io.has_meaning(state[2], state[4], letter)):
                         score += 0.002
                 # END
+                if score == 0:
+                    return 0
 
         elif len_state == 7:
             # check the first column and the right-left diagonal
@@ -101,10 +105,12 @@ class AlgorithmPart3:
                 return 0
             else:
                 # START: add score for each letter left which makes the second column has meaning
-                for letter in letters_left:
-                    if ai_io.has_meaning(state[1], state[4], letter):
+                if ai_io.has_meaning(state[1], state[4], letters_left[0]):
+                        score += 0.004
+                if ai_io.has_meaning(state[1], state[4], letters_left[1]):
                         score += 0.004
                 # END
+                return score
 
         elif len_state == 8:
             # check the second column
@@ -169,7 +175,7 @@ class AlgorithmPart3:
                     break
 
                 current_state = L.pop(0)[0]
-                
+
                 # increment number of states
                 num_of_states += 1
 
