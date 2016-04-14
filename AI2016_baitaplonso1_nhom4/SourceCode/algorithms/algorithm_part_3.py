@@ -47,7 +47,7 @@ class AlgorithmPart3:
         # END
 
         len_state = len(state)
-        weight = 1.0/30.0
+        weight = 1.0/30.0  # the value is chosen from experience
 
         if len_state == 2:
             # START: add score for each letter left which makes the first row has meaning
